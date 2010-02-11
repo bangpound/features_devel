@@ -1,0 +1,50 @@
+<?php
+// $Id$
+/**
+ * @file features_devel.module
+ * Features development tools.
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function features_devel_menu() {
+  if (module_exists('devel')) {
+    $items['devel/unfeaturized'] = array(
+      'title' => 'Unfeaturized',
+      'description' => 'Lists unfeaturized things.',
+      'page callback' => 'features_devel_unfeaturized',
+      'access arguments' => array('access devel information'),
+      'menu_name' => 'devel',
+    );
+  }
+  return $items;
+}
+
+function features_devel_unfeaturized() {
+  $output = '';
+
+  // Permissions
+  module_load_include('inc', 'features', 'includes/features.user');
+  $perms = array_keys(_user_features_permission_map());
+
+  $defaults = array();
+  foreach (module_invoke_all('user_default_permissions') as $permission) {
+    $defaults[] = $permission['name'];
+  }
+  $items = array_diff($perms, $defaults);
+  sort($items);
+  $output .= theme('item_list', $items, 'Permissions');
+
+  // Variables
+  // TODO: abstract to all ctools exportables.
+  $items = array();
+  foreach (ctools_export_load_object('variable') as $variable) {
+    if ($variable->export_type == EXPORT_IN_DATABASE) {
+      $items[] = $variable->name;
+    }
+  }
+  sort($items);
+  $output .= theme('item_list', $items, 'Variables');
+  return $output;
+}

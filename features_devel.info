@@ -1,0 +1,6 @@
+; $Id$
+name = Features devel
+description = Debugging and assembly help for Features.
+core = 6.x
+dependencies[] = features
+dependencies[] = devel
