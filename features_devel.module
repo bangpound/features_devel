@@ -9,15 +9,13 @@
  * Implementation of hook_menu().
  */
 function features_devel_menu() {
-  if (module_exists('devel')) {
-    $items['devel/unfeaturized'] = array(
-      'title' => 'Unfeaturized',
-      'description' => 'Lists unfeaturized things.',
-      'page callback' => 'features_devel_unfeaturized',
-      'access arguments' => array('access devel information'),
-      'menu_name' => 'devel',
-    );
-  }
+  $items['devel/unfeaturized'] = array(
+    'title' => 'Unfeaturized',
+    'description' => 'Lists unfeaturized things.',
+    'page callback' => 'features_devel_unfeaturized',
+    'access arguments' => array('access devel information'),
+    'menu_name' => 'devel',
+  );
   return $items;
 }
 
